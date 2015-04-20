@@ -1,8 +1,17 @@
 ## These functions will help to cache a matrix inversion. We will develop two funtions 
 ## to support this functionality
 
-## This function creates a special "matrix" object that can cache its inverse.
+## Steps to test 
+## source('~/git/ProgrammingAssignment2/cachematrix.R')
+## my_matrix <- matrix(1:4,2,2)
+## my_matrix2<-makeCacheMatrix(my_matrix)
+## my_matrix3<-cacheSolve(my_matrix2)
+## When executed first time, it prints "data not yet in cache"
+## Subsequent executions will print getting cached data
+## The final test will be to multiply my_matrix %*% my_matrix3 
+## This should print a matrix ((1,0),(0,1))
 
+## This function creates a special "matrix" object that can cache its inverse.
 makeCacheMatrix <- function(x = matrix()) {
         # Initialize the cache value
         matrixInversion <- NULL
@@ -17,19 +26,19 @@ makeCacheMatrix <- function(x = matrix()) {
         get <- function() x
         
         # Function to set the cached value
-        setMatrixInvertion <- function(solve) {
+        setMatrixInversion <- function(solve) {
                 matrixInversion <<- solve
         }
         
         # Function to get the cached value
-        getMatrixInvertion <- function() {
+        getMatrixInversion <- function() {
                 matrixInversion
         }
         
         # List of functions that will be retured
         list(set = set, get = get,
-             setMatrixInvertion = setMatrixInvertion,
-             getMatrixInvertion = getMatrixInvertion)
+             setMatrixInversion = setMatrixInversion,
+             getMatrixInversion = getMatrixInversion)
         
 }
 
@@ -39,10 +48,11 @@ makeCacheMatrix <- function(x = matrix()) {
 ## If not it calculates the value using the solve function and stores it in cache
 ## During the first exection there will be a "data not yet in cache" message
 ## Subsequent executions will see the message "getting cached data"
-
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-        m <- x$getMatrixInvert()
+        
+        ## Check if the value exists in cache. If it exists return the value
+        m <- x$getMatrixInversion()
         if(!is.null(m)) {
                 message("getting cached data")
                 return(m)
@@ -50,8 +60,16 @@ cacheSolve <- function(x, ...) {
                 message("data not yet in cache")  
         }
         
+        ## Get the data component
         data <- x$get()
+        
+        ## Call the solve function to invert the matrix and cache it
         m <- solve(data, ...)
-        x$setMatrixInvertion(m)
+        x$setMatrixInversion(m)
+        
+        ## Return the value
         m
 }
+
+
+
