@@ -52,10 +52,10 @@ cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
         
         ## Check if the value exists in cache. If it exists return the value
-        m <- x$getMatrixInversion()
-        if(!is.null(m)) {
+        matrixInversion <- x$getMatrixInversion()
+        if(!is.null(matrixInversion)) {
                 message("getting cached data")
-                return(m)
+                return(matrixInversion)
         } else {
                 message("data not yet in cache")  
         }
@@ -64,11 +64,11 @@ cacheSolve <- function(x, ...) {
         data <- x$get()
         
         ## Call the solve function to invert the matrix and cache it
-        m <- solve(data, ...)
-        x$setMatrixInversion(m)
+        matrixInversion <- solve(data, ...)
+        x$setMatrixInversion(matrixInversion)
         
         ## Return the value
-        m
+        matrixInversion
 }
 
 
